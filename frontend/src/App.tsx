@@ -57,8 +57,7 @@ function App() {
     if (downloadUrl) {
       console.log({ downloadUrl });
       const link = document.createElement('a');
-      const filename = downloadUrl.split('/').pop() || '';
-      link.download = filename;
+      link.target = '_blank';
       link.href = downloadUrl;
       link.click();
       setTimeout(() => {

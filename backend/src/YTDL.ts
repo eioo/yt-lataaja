@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events';
 import ffmpeg from 'fluent-ffmpeg';
 import * as fs from 'fs';
+import { uniqueId } from 'lodash';
 import * as path from 'path';
 import { parseDuration, secondsToDuration } from 'shared/date';
 import { getVideoIdFromUrl } from 'shared/youtube';
@@ -9,6 +10,8 @@ import TypedEmitter from 'typed-emitter';
 import ytdl from 'ytdl-core';
 import { fileExists, sanitizeFilename } from './files';
 import { ConversionProgress, DownloadOptions } from './types';
+
+const outputRoot = 'dl';
 
 export interface YTDLOptions {
   ffmpegPath?: string;
@@ -30,8 +33,13 @@ export class YTDL extends (EventEmitter as new () => TypedEmitter<YTDLEvents>) {
   constructor(options: YTDLOptions = {}) {
     super();
     this.options = options;
+    this.setupOutputDir();
     this.setupFfmpeg();
     this.addListener('stop', this.stop);
+  }
+
+  private setupOutputDir() {
+    fs.rmdirSync(outputRoot, { recursive: true });
   }
 
   private setupFfmpeg() {
@@ -69,9 +77,9 @@ export class YTDL extends (EventEmitter as new () => TypedEmitter<YTDLEvents>) {
     })();
 
     const outputExtension = options.outputExtension || 'mp4';
-    const outputRoot = 'dl';
     const relativePath = path.join(
       outputRoot,
+      uniqueId(),
       videoId,
       `${sanitizeFilename(title)}.${outputExtension}`
     );
@@ -107,11 +115,17 @@ export class YTDL extends (EventEmitter as new () => TypedEmitter<YTDLEvents>) {
     const { cropStart, cropEnd } = options;
 
     // Set video starting & ending times and calculate video duration
-    const startSeconds = !cropStart || cropStart < 0 ? 0 : cropStart;
+    const startSeconds =
+      cropStart === undefined ? 0 : cropStart < 0 ? 0 : cropStart;
     const endSeconds =
-      !cropEnd || cropEnd > lengthSeconds ? lengthSeconds : cropEnd;
+      cropEnd === undefined
+        ? 0
+        : cropEnd > lengthSeconds
+        ? lengthSeconds
+        : cropEnd;
     const duration = endSeconds - startSeconds;
 
+    console.log({ startSeconds, endSeconds });
     console.log(
       `Downloading video (Duration: ${secondsToDuration(duration)}: ${title}`
     );
@@ -125,12 +139,14 @@ export class YTDL extends (EventEmitter as new () => TypedEmitter<YTDLEvents>) {
     });
 
     // Crop video
-    if (cropStart) {
-      this.conversion.seek(startSeconds);
+    if (cropStart !== undefined) {
+      console.log('Seeking to', secondsToDuration(startSeconds));
+      this.conversion.setStartTime(startSeconds);
     }
 
     if (cropEnd !== lengthSeconds) {
-      this.conversion.duration(endSeconds);
+      console.log('Cropping video:', secondsToDuration(duration));
+      this.conversion.duration(duration);
     }
 
     this.conversion.run();
