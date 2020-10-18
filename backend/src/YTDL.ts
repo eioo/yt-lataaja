@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import ffmpeg from 'fluent-ffmpeg';
 import * as fs from 'fs';
-import { uniqueId } from 'lodash';
+import uniqueId from 'lodash/uniqueId';
 import * as path from 'path';
 import { parseDuration, secondsToDuration } from 'shared/date';
 import { getVideoIdFromUrl } from 'shared/youtube';

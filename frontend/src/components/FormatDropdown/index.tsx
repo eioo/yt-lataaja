@@ -1,4 +1,5 @@
-import { groupBy, orderBy } from 'lodash-es';
+import groupBy from 'lodash/groupBy';
+import orderBy from 'lodash/orderBy';
 import React, { useMemo, useRef, useState } from 'react';
 import type { VideoFormat } from 'shared/youtube';
 import useClickAway from '../../useClickAway';
