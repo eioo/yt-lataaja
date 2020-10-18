@@ -68,7 +68,10 @@ export class YTDL extends (EventEmitter as new () => TypedEmitter<YTDLEvents>) {
 
     console.log(`Downloading video [${lengthSeconds} seconds]: ${title}`);
 
-    this.downloadStream = ytdl(videoUrl);
+    this.downloadStream = ytdl(videoUrl, {
+      quality: options.itag,
+    });
+
     this.conversion = ffmpeg({ source: this.downloadStream })
       /* .size(`?x${targetFormat.height}`) */
       .audioBitrate(options.audioBitrate || 128)
