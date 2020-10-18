@@ -1,0 +1,35 @@
+@import '../../colors.scss';
+
+$hover-color: $bg-lightest;
+
+.fileTypeSelect {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+
+  &.disabled {
+    pointer-events: none;
+  }
+
+  button {
+    flex-basis: 25%;
+    border-radius: 0 !important;
+    background: $bg-light;
+    cursor: pointer;
+    height: 35px;
+    border: none;
+    text-align: center;
+    border-bottom: 1px solid $border-color;
+    flex-grow: 1;
+    outline: none;
+    transition: all 0.15s;
+
+    &:hover,
+    &:focus,
+    &.active {
+      font-size: 15px;
+      background: $hover-color;
+      font-weight: 800;
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "cross-env-shell \"parcel --no-cache -p $REACT_PORT src/index.html\"",
+    "build": "parcel build",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
+    "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\""
+  },
+  "dependencies": {
+    "autoprefixer": "9.8.6",
+    "lib": "1.0.0",
+    "lodash-es": "^4.17.15",
+    "parcel": "^2.0.0-beta.1",
+    "react": "^16.13.1",
+    "react-delta": "^1.1.0",
+    "react-dom": "^16.13.1",
+    "react-use-websocket": "^2.2.0",
+    "react-youtube": "^7.12.0",
+    "shared": "1.0.0"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.3",
+    "@types/react": "^16.9.49",
+    "@types/react-dom": "^16.9.8",
+    "cross-env": "^7.0.2",
+    "postcss": "^8.1.0",
+    "postcss-modules": "^3.2.2",
+    "prettier": "^2.0.5",
+    "sass": "^1.27.0",
+    "typescript": "^4.0.0"
+  }
+}

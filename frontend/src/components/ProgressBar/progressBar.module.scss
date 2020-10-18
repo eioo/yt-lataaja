@@ -1,0 +1,63 @@
+@import '../../colors.scss';
+
+.container {
+  width: 100%;
+  text-align: center;
+  border-radius: 2px;
+  height: 30px;
+  margin-top: 0.5rem;
+  border: 1px solid $border-color;
+  $sec: lighten($bg-light, 1%);
+  background-image: linear-gradient(
+    45deg,
+    $sec 25%,
+    $bg-light 25%,
+    $bg-light 50%,
+    $sec 50%,
+    $sec 75%,
+    $bg-light 75%,
+    $bg-light 100%
+  );
+  background-size: 56.57px 56.57px;
+  overflow: hidden;
+  border-radius: 5px;
+  animation: fadeIn ease 0.5s;
+}
+
+.progressBar {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  background-image: linear-gradient(
+    45deg,
+    #b30000 25%,
+    #ab0000 25%,
+    #ab0000 50%,
+    #b30000 50%,
+    #b30000 75%,
+    #ab0000 75%,
+    #ab0000 100%
+  );
+  background-size: 56.57px 56.57px;
+  color: white;
+  font-size: 16px;
+  transition: width 200ms;
+  animation: animatedBackground 2s linear infinite;
+}
+@keyframes animatedBackground {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 0% 200%;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,23 @@
+@import '../../colors.scss';
+
+$border-radius: 5px;
+
+.searchBar {
+  display: flex;
+  height: 40px;
+  z-index: 2;
+  align-items: center;
+
+  .searchIcon {
+    height: 23px;
+  }
+
+  input[type='text'] {
+    $icon-size: 26px;
+    background: url('../../assets/FaYoutubePlay.svg') no-repeat;
+    background-position-y: 50%;
+    background-position-x: 10px;
+    background-size: $icon-size;
+    padding-left: $icon-size + 20px;
+  }
+}

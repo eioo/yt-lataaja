@@ -1,0 +1,37 @@
+{
+  "name": "yt-lataaja",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "shared"
+  ],
+  "scripts": {
+    "start:frontend": "env-cmd --no-override yarn workspace frontend start",
+    "start:backend": "env-cmd --no-override yarn workspace backend start",
+    "test": "jest",
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\""
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "env-cmd": "^10.1.0",
+    "husky": "^4.3.0",
+    "jest": "^26.5.3",
+    "pretty-quick": "^3.1.0",
+    "ts-jest": "^26.4.1"
+  },
+  "dependencies": {
+    "autoprefixer": "9.8.6"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": [
+        "pretty-quick --staged",
+        "yarn test"
+      ]
+    }
+  }
+}
