@@ -12,9 +12,7 @@ import VideoDetails from './components/VideoDetails';
 import { useYoutube } from './useYoutube';
 
 function App() {
-  const [videoUrl, setVideoUrl] = useState(
-    'https://www.youtube.com/watch?v=y-5oXj3M6aAQ',
-  );
+  const [videoUrl, setVideoUrl] = useState('');
   const [outputExtension, setOutputExtension] = useState('mp4');
   const [cropStart, setCropStart] = useState<number>();
   const [cropEnd, setCropEnd] = useState<number>();
