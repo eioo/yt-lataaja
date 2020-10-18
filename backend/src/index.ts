@@ -95,6 +95,10 @@ export function startWebSocketServer(port = process.env.WS_PORT) {
         });
       }
     });
+
+    ws.on('close', () => {
+      downloader.stop();
+    });
   });
 
   wss.on('close', () => {

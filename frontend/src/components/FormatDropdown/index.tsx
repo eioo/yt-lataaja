@@ -4,6 +4,10 @@ import type { VideoFormat } from 'shared/youtube';
 import useClickAway from '../../useClickAway';
 import styles from './dropdown.module.scss';
 
+function getBestVideoFormat(formats: VideoFormat[]) {
+  return formats.find((f) => [5, 6, 17, 18, 22].includes(f.itag)); // itag is always the same for best format
+}
+
 interface FormatDropdownProps {
   disabled: boolean;
   formats: VideoFormat[];
@@ -30,22 +34,9 @@ function FormatDropdown({
   );
 
   const bestFormat = useMemo(() => {
-    const sortedByHeight = orderBy(
-      formats.filter((f) => f.hasVideo),
-      (f) => f.height,
-      'desc',
-    );
-
-    const bestFormat = orderBy(
-      sortedByHeight.filter(
-        (f) =>
-          f.height === sortedByHeight[0].height && f.hasAudio && f.hasVideo,
-      ),
-      'audioBitrate',
-      'desc',
-    )[0];
-    onSelectedVideoItagChange(bestFormat?.itag);
-    return bestFormat;
+    const format = getBestVideoFormat(formats);
+    format && onSelectedVideoItagChange(format.itag);
+    return format;
   }, [formats]);
 
   const menuStyle = useMemo(() => {
@@ -70,9 +61,11 @@ function FormatDropdown({
   const groupedFormats = groupBy(formats, (f) =>
     f.qualityLabel === null ? 'Audio only' : f.qualityLabel,
   );
+
   const formatEntries = orderBy(
     Object.entries(groupedFormats),
-    ([groupName]) => (groupName === 'Audio only' ? -1 : 0),
+    ([groupName, [first]]) =>
+      groupName === 'Audio only' ? 0 : (first.height || 0) + (first.fps || 0),
     'desc',
   );
 
@@ -90,7 +83,7 @@ function FormatDropdown({
 
     const audioText = format.hasAudio
       ? `${format.audioBitrate} kbps`
-      : 'No audio';
+      : 'no audio';
 
     const isBestText = format.itag === bestFormat?.itag ? ` (Best) ` : '';
     return `${qualityText}${[videoText, audioText]

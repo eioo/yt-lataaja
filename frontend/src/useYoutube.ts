@@ -17,7 +17,7 @@ function parseMessage(message: string): WSResponse {
 }
 
 export function getDownloadUrl(relativePath: string) {
-  return `${location.origin}/${relativePath}`;
+  return `${location.protocol}//${location.hostname}:${process.env.HTTP_PORT}/${relativePath}`;
 }
 
 export function useYoutube() {

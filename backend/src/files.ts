@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-export const outputDirName = '../frontend/dist';
+export const outputDirName = 'dl';
 
 export function fileExists(path: string) {
   try {

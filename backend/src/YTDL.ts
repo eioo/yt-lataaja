@@ -17,6 +17,7 @@ export interface YTDLOptions {
 interface YTDLEvents {
   error: (error: unknown) => void;
   started: () => void;
+  stop: () => void;
   finished: (filePath: string) => void;
   progress: (percentage: number) => void;
 }
@@ -30,6 +31,7 @@ export class YTDL extends (EventEmitter as new () => TypedEmitter<YTDLEvents>) {
     super();
     this.options = options;
     this.setupFfmpeg();
+    this.addListener('stop', this.stop);
   }
 
   private setupFfmpeg() {
@@ -37,6 +39,13 @@ export class YTDL extends (EventEmitter as new () => TypedEmitter<YTDLEvents>) {
 
     if (ffmpegPath && fileExists(ffmpegPath)) {
       ffmpeg.setFfmpegPath(ffmpegPath);
+    }
+  }
+
+  async stop() {
+    if (this.conversion) {
+      console.log('Stopping ffmpeg');
+      this.conversion.kill('SIGKILL');
     }
   }
 
@@ -56,9 +65,9 @@ export class YTDL extends (EventEmitter as new () => TypedEmitter<YTDLEvents>) {
     })();
 
     const outputExtension = options.outputExtension || 'mp4';
-    const outputRoot = path.resolve('../frontend/dist');
+    const outputRoot = 'dl';
     const relativePath = path.join(
-      'dl',
+      outputRoot,
       videoId,
       `${sanitizeFilename(title)}.${outputExtension}`
     );
@@ -77,7 +86,11 @@ export class YTDL extends (EventEmitter as new () => TypedEmitter<YTDLEvents>) {
       .audioBitrate(options.audioBitrate || 128)
       .output(outputFile)
       .on('error', (err) => {
-        console.error(`Ffmpeg cannot process video: ${err?.message}`);
+        if (err.message.includes('SIGKILL')) {
+          return;
+        }
+
+        console.error(`Ffmpeg cannot process video: ${err.message}`);
         this.emit('error', err);
       })
       .on('start', (commandLine) => {

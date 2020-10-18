@@ -11,4 +11,4 @@ dist
 .env
 .vscode
 .parcel-cache
-frontend/dist
+backend/dl

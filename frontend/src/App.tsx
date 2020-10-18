@@ -55,6 +55,7 @@ function App() {
 
   useEffect(() => {
     if (downloadUrl) {
+      console.log({ downloadUrl });
       const link = document.createElement('a');
       const filename = downloadUrl.split('/').pop() || '';
       link.download = filename;
@@ -115,7 +116,12 @@ function App() {
               onSetCropEnd={() => setCropEnd(currentTime)}
               onReset={() => {
                 setCropStart(0);
-                setCropEnd(Number(videoDetails?.lengthSeconds));
+                setCropEnd(
+                  Number(
+                    videoInfo.formats?.find((f) => f.itag === selectedVideoItag)
+                      ?.approxDurationMs || videoDetails?.lengthSeconds,
+                  ) / 1000,
+                );
               }}
             />
             <FileFormatSelect

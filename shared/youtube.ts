@@ -8,7 +8,7 @@ export function getVideoIdFromUrl(videoUrl: string) {
     return "";
   }
 }
-
+// ytdl-core types
 export interface YtdlVideoInfo {
   formats: VideoFormat[];
   videoDetails: VideoDetails;
