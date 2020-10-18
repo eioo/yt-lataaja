@@ -68,11 +68,12 @@ function App() {
   }, [downloadUrl]);
 
   const onDownloadButtonClick = () => {
-    if (!outputExtension) {
+    if (!outputExtension || !selectedVideoItag) {
       return;
     }
 
     downloadVideo(videoUrl, {
+      itag: selectedVideoItag,
       outputExtension,
       cropStart,
       cropEnd,

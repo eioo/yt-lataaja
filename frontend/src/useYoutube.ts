@@ -70,6 +70,7 @@ export function useYoutube() {
   const downloadVideo = (
     videoUrl: string,
     options: {
+      itag: number;
       outputExtension: string;
       audioBitrate: number;
       cropStart?: number;

@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 import ffmpeg from 'fluent-ffmpeg';
 import * as fs from 'fs';
 import * as path from 'path';
-import { parseDuration } from 'shared/date';
+import { parseDuration, secondsToDuration } from 'shared/date';
 import { getVideoIdFromUrl } from 'shared/youtube';
 import internal from 'stream';
 import TypedEmitter from 'typed-emitter';
@@ -55,11 +55,15 @@ export class YTDL extends (EventEmitter as new () => TypedEmitter<YTDLEvents>) {
       if (options.metaData) {
         return options.metaData;
       } else {
-        const { videoDetails } = await ytdl.getInfo(videoUrl);
-        const { title, lengthSeconds } = videoDetails;
+        const { formats, videoDetails } = await ytdl.getInfo(videoUrl);
+
         return {
-          title,
-          lengthSeconds: Number(lengthSeconds),
+          title: videoDetails.title,
+          lengthSeconds:
+            Number(
+              formats.find((f) => f.itag === options.itag)?.approxDurationMs ||
+                0
+            ) / 1000,
         };
       }
     })();
@@ -74,8 +78,6 @@ export class YTDL extends (EventEmitter as new () => TypedEmitter<YTDLEvents>) {
     const outputFile = path.resolve(outputRoot, relativePath);
     const outputDir = path.dirname(outputFile);
     fs.mkdirSync(outputDir, { recursive: true });
-
-    console.log(`Downloading video [${lengthSeconds} seconds]: ${title}`);
 
     this.downloadStream = ytdl(videoUrl, {
       quality: options.itag,
@@ -109,6 +111,10 @@ export class YTDL extends (EventEmitter as new () => TypedEmitter<YTDLEvents>) {
     const endSeconds =
       !cropEnd || cropEnd > lengthSeconds ? lengthSeconds : cropEnd;
     const duration = endSeconds - startSeconds;
+
+    console.log(
+      `Downloading video (Duration: ${secondsToDuration(duration)}: ${title}`
+    );
 
     // Show progress
     this.conversion.on('progress', (progress: ConversionProgress) => {
