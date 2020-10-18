@@ -10,11 +10,17 @@
     "shared"
   ],
   "scripts": {
+    "build:frontend": "env-cmd --no-override yarn workspace frontend build",
+    "build:backend": "env-cmd --no-override yarn workspace backend build",
+    "dev:frontend": "env-cmd --no-override yarn workspace frontend dev",
+    "dev:backend": "env-cmd --no-override yarn workspace backend dev",
     "start:frontend": "env-cmd --no-override yarn workspace frontend start",
     "start:backend": "env-cmd --no-override yarn workspace backend start",
+    "build": "concurrently \"npm run build:frontend\" \"npm run build:backend\"",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
     "test": "jest",
-    "lint": "lint-staged",
-    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\""
+    "lint": "lint-staged"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",

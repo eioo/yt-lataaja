@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "dist",
+    "outDir": "../build/backend",
     "esModuleInterop": true
   },
   "include": ["src/**/*.ts"],

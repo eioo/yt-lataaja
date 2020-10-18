@@ -2,8 +2,9 @@
   "name": "frontend",
   "version": "1.0.0",
   "scripts": {
-    "start": "cross-env-shell \"parcel --no-cache -p $REACT_PORT src/index.html\"",
-    "build": "parcel build",
+    "dev": "cross-env-shell \"parcel --no-cache --dist-dir ../build/frontend  -p $REACT_PORT src/index.html\"",
+    "start": "cross-env-shell \"parcel --no-cache --dist-dir ../build/frontend --no-hmr -p $REACT_PORT src/index.html\"",
+    "build": "parcel build --dist-dir ../build/frontend src/index.html",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\""
   },

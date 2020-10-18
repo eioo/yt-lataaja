@@ -6,8 +6,9 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+build
+dist
 .env
-frontend/dist
-backend/output
 .vscode
 .parcel-cache
+frontend/dist
