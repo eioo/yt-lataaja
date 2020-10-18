@@ -35,16 +35,14 @@ function App() {
   const { videoDetails } = videoInfo || {};
 
   useEffect(() => {
-    if (videoDetails) {
-      setCropStart(0);
-      setCropEnd(Number(videoDetails.lengthSeconds));
-    }
-  }, [videoDetails]);
-
-  useEffect(() => {
     const selected = videoInfo?.formats.find(
       (f) => f?.itag === selectedVideoItag,
     );
+
+    if (selected) {
+      setCropStart(0);
+      setCropEnd(Number(selected.approxDurationMs) / 1000);
+    }
   }, [selectedVideoItag, videoInfo]);
 
   useEffect(() => {
