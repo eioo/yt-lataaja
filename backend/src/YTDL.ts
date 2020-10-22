@@ -40,6 +40,7 @@ export class YTDL extends (EventEmitter as new () => TypedEmitter<YTDLEvents>) {
 
   private setupOutputDir() {
     fs.rmdirSync(outputRoot, { recursive: true });
+    fs.mkdirSync(outputRoot, { recursive: true });
   }
 
   private setupFfmpeg() {
