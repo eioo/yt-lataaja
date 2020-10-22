@@ -125,7 +125,6 @@ export class YTDL extends (EventEmitter as new () => TypedEmitter<YTDLEvents>) {
         : cropEnd;
     const duration = endSeconds - startSeconds;
 
-    console.log({ startSeconds, endSeconds });
     console.log(
       `Downloading video (Duration: ${secondsToDuration(duration)}: ${title}`
     );

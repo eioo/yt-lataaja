@@ -7,7 +7,8 @@
  */
 export function parseDuration(text: string) {
   if (text.length !== 11) {
-    throw new Error(`Failed to parse duration, text length is not 11`);
+    console.warn(`Failed to parse duration, text length is not 11`);
+    return 0;
   }
 
   const [hours, minutes, seconds, cs] = text.split(/[:\.]/).map(Number);
