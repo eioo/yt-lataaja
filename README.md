@@ -6,11 +6,11 @@
 
 ## Installation
 
+First, copy `.env.example` to `.env` and update if needed, then:
+
 ```bash
 yarn install
 ```
-
-You can setup ports in `.env` file.
 
 ## Usage
 
